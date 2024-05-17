@@ -1,9 +1,11 @@
+package components;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-public class JTextFieldPrompt extends JTextField {
+public class TextFieldPrompt extends JTextField {
     private final String placeholder;
 
     private Font defaultFont = new Font(getFont().getName(), Font.PLAIN, 12);
@@ -13,8 +15,8 @@ public class JTextFieldPrompt extends JTextField {
     private final Color placeholderColor = new Color(0, 0, 0, .6f);
 
 
-    public JTextFieldPrompt(String text, int columns) {
-        this.placeholder = text;
+    public TextFieldPrompt(String placeholder, int columns) {
+        this.placeholder = placeholder;
 
         setText(placeholder);
         setColumns(columns);
