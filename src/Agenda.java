@@ -16,6 +16,7 @@ public class Agenda extends JFrame {
         setTitle("Agenda");
         setSize(500, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setAutoRequestFocus(false);
 
         mainPanel = new JPanel();
         mainPanel.setBackground(Color.DARK_GRAY);
