@@ -1,3 +1,6 @@
+import components.HeaderMain;
+import components.Search;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -5,40 +8,26 @@ import java.awt.*;
 public class Agenda extends JFrame {
     private JPanel mainPanel;
     private JPanel header;
-    private JTextField inputText;
-    private JButton btnAddContact;
-    private JList<String> listContacts;
-
-    String[] data = {"one", "two", "three", "four"};
-
+    private Search search;
 
     public Agenda() {
         setTitle("Agenda");
-        setSize(500, 600);
+        setSize(450, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         setAutoRequestFocus(false);
 
         mainPanel = new JPanel();
-        mainPanel.setBackground(Color.DARK_GRAY);
-        mainPanel.setLayout(new BorderLayout(0, 20));
+        mainPanel.setBackground(Color.WHITE);
+        mainPanel.setBorder(new EmptyBorder(0, 20, 0,20));
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
         setContentPane(mainPanel);
 
-        header = new JPanel();
-        header.setLayout(new BorderLayout(10, 0));
-        header.setBorder(new EmptyBorder(10, 10, 10, 10));
-        header.setBackground(Color.DARK_GRAY);
-        add(BorderLayout.BEFORE_FIRST_LINE, header);
+        header = new HeaderMain();
+        add(header);
 
-        inputText = new JTextFieldPrompt("Nombre", 20);
-        header.add(BorderLayout.WEST, inputText);
-
-        btnAddContact = new JButton("Add");
-        header.add(BorderLayout.EAST, btnAddContact);
-
-        listContacts = new JList<String>(data);
-        listContacts.setBackground(Color.DARK_GRAY);
-        listContacts.setForeground(Color.WHITE);
-        listContacts.setBorder(new EmptyBorder(0, 30, 0, 30));
-        add(BorderLayout.CENTER, listContacts);
+        search = new Search("Buscar Contacto...");
+        add(search);
     }
 }
