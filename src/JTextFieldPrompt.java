@@ -1,49 +1,62 @@
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 public class JTextFieldPrompt extends JTextField {
-    private String placeholder;
-    private Font italicFont = new Font(getFont().getName(), Font.ITALIC, 12);
-    private Font normalFont = new Font(getFont().getName(), Font.PLAIN, 12);
+    private final String placeholder;
+
+    private Font defaultFont = new Font(getFont().getName(), Font.PLAIN, 12);
+    private final Font placeholderFont = new Font(defaultFont.getName(), Font.ITALIC, defaultFont.getSize());
+
+    private Color defaultColor = new Color(0, 0, 0, 1f);
+    private final Color placeholderColor = new Color(0, 0, 0, .6f);
 
 
     public JTextFieldPrompt(String text, int columns) {
-        super();
         this.placeholder = text;
+
+        setText(placeholder);
         setColumns(columns);
 
-        setText(this.placeholder);
-
-        setFont(italicFont);
-        setForeground(new Color(0, 0, 0, .5f));
+        setActivePlaceholder(true);
 
         setMargin(new Insets(5, 10, 5, 10));
 
         addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                setText("");
-                setFont(normalFont);
+                if (getText().equals(placeholder)) {
+                    setActivePlaceholder(false);
+                }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 if (getText().isBlank()) {
-                    setText(placeholder);
+                    setActivePlaceholder(true);
                 }
             }
         });
+
+    }
+    public void setDefaultFont(Font newFont) {
+        this.defaultFont = newFont;
     }
 
-    public String getPlaceholder() {
-        return this.placeholder;
+    public void setDefaultColor(Color newColor) {
+        this.defaultColor = newColor;
     }
 
-    public void setPlaceholder(String text) {
-        this.placeholder = text;
+    public void setActivePlaceholder(boolean activePlaceholder) {
+        if (activePlaceholder) {
+            setText(placeholder);
+            setFont(placeholderFont);
+            setForeground(placeholderColor);
+        } else {
+            setText("");
+            setFont(defaultFont);
+            setForeground(defaultColor);
+        }
     }
 }
