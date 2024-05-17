@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class Agenda extends JFrame {
     private JPanel mainPanel;
-    private JPanel header;
+    private HeaderMain header;
     private Search search;
 
     public Agenda() {
@@ -15,7 +15,8 @@ public class Agenda extends JFrame {
         setSize(450, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setAutoRequestFocus(false);
+        setFocusTraversalPolicy(new DefaultFocusTraversalPolicy());
+        setLocationRelativeTo(null);
 
         mainPanel = new JPanel();
         mainPanel.setBackground(Color.WHITE);
