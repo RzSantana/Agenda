@@ -1,14 +1,14 @@
+import components.FloatingActionButton;
 import components.HeaderMain;
 import components.Search;
+import panels.MainPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class Agenda extends JFrame {
-    private JPanel mainPanel;
-    private HeaderMain header;
-    private Search search;
+    private JPanel body;
 
     public Agenda() {
         setTitle("Agenda");
@@ -18,17 +18,16 @@ public class Agenda extends JFrame {
         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy());
         setLocationRelativeTo(null);
 
-        mainPanel = new JPanel();
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setBorder(new EmptyBorder(0, 20, 0,20));
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        setContentPane(mainPanel);
+        body = new JPanel();
+        body.setBackground(Color.WHITE);
+        body.setBorder(new EmptyBorder(0, 20, 0, 20));
+        body.setLayout(new BorderLayout());
 
-        header = new HeaderMain();
-        add(header);
+        setContentPane(body);
 
-        search = new Search("Buscar Contacto...");
-        add(search);
+        add(new JLayer<>(new MainPanel(), new FloatingActionButton()));
+
+
     }
 }
