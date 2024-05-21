@@ -1,8 +1,5 @@
 import components.FloatingActionButton;
-import components.HeaderMain;
-import components.Search;
 import panels.MainPanel;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
