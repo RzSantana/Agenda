@@ -5,18 +5,19 @@ import javax.swing.plaf.LayerUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.*;
 
 public class FloatingActionButton extends LayerUI<Component> {
     private Shape shape;
-    private Image image;
-    private Color defaultColor = new Color(35, 190, 246);
-    private Color pressColor = defaultColor.brighter();
-    private Color hoverColor = defaultColor.darker();
+    private Image iconPlus;
+    private Color defaultColor = new Color(167, 83, 223);
+    private Color pressColor = defaultColor.darker();
+    private Color hoverColor = defaultColor.brighter();
     private boolean mouseHovered;
     private boolean mousePressed;
 
     public FloatingActionButton() {
-        image = new ImageIcon(getClass().getResource("../images/plus.png")).getImage();
+        iconPlus = new ImageIcon(getClass().getResource("../images/plus.png")).getImage();
     }
 
     // Se configura el componente para que escuche eventos del raton, una vez se renderiaza
@@ -40,9 +41,14 @@ public class FloatingActionButton extends LayerUI<Component> {
     @Override
     public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
+        int size = 50;
+        int x = c.getWidth() - size - 20;
+        int y = c.getHeight() - size - 20;
+        int iconSize = 24;
+        int iconX = (size - iconSize) / 2;
+        int iconY = (size - iconSize) / 2;
 
         Graphics2D button = (Graphics2D) g.create();
-
         button.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Pinta el boton según la interacción
@@ -55,18 +61,11 @@ public class FloatingActionButton extends LayerUI<Component> {
         }
 
         // Establece la forma
-        int size = 50;
-        int x = c.getWidth() - size;
-        int y = c.getHeight() - size - 20;
         shape = new Ellipse2D.Double(x, y, size, size);
-
-        // Pintar icono
-        int iconSize = 24;
-        int iconX = (size - iconSize) / 2;
-        int iconY = (size - iconSize) / 2;
-
         button.fill(shape);
-        button.drawImage(image, x + iconX, y + iconY, null);
+
+        // Pinta el icono
+        button.drawImage(iconPlus, x + iconX, y + iconY, null);
 
         button.dispose();
     }
