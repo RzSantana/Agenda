@@ -1,14 +1,12 @@
 package components;
 
-import panels.MainPanel;
-
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
-public class FloatingActionButton extends LayerUI<MainPanel> {
+public class FloatingActionButton extends LayerUI<Component> {
     private Shape shape;
     private Image image;
     private Color defaultColor = new Color(35, 190, 246);
@@ -21,7 +19,7 @@ public class FloatingActionButton extends LayerUI<MainPanel> {
         image = new ImageIcon(getClass().getResource("../images/plus.png")).getImage();
     }
 
-
+    // Se configura el componente para que escuche eventos del raton, una vez se renderiaza
     @Override
     public void installUI(JComponent c) {
         super.installUI(c);
@@ -30,6 +28,7 @@ public class FloatingActionButton extends LayerUI<MainPanel> {
         }
     }
 
+    // Se desactiva la escucha de eventos del raton, una vez se deja de renderizar
     @Override
     public void uninstallUI(JComponent c) {
         super.uninstallUI(c);
@@ -42,40 +41,40 @@ public class FloatingActionButton extends LayerUI<MainPanel> {
     public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
 
+        Graphics2D button = (Graphics2D) g.create();
 
-        Graphics2D graphics2D = (Graphics2D) g.create();
+        button.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics2D.setColor(defaultColor);
-
+        // Pinta el boton según la interacción
         if (mousePressed) {
-            graphics2D.setColor(pressColor);
-        }
-
-        if (mouseHovered) {
-            graphics2D.setColor(hoverColor);
+            button.setColor(pressColor);
+        } else if (mouseHovered) {
+            button.setColor(hoverColor);
+        } else {
+            button.setColor(defaultColor);
         }
 
         // Establece la forma
         int size = 50;
-        int x = c.getWidth() - size - 15;
-        int y = c.getHeight() - size - 15;
+        int x = c.getWidth() - size;
+        int y = c.getHeight() - size - 20;
         shape = new Ellipse2D.Double(x, y, size, size);
-        graphics2D.fill(shape);
 
         // Pintar icono
         int iconSize = 24;
         int iconX = (size - iconSize) / 2;
         int iconY = (size - iconSize) / 2;
-        graphics2D.drawImage(image, x+iconX, y+iconY, null);
 
-        graphics2D.dispose();
+        button.fill(shape);
+        button.drawImage(image, x + iconX, y + iconY, null);
+
+        button.dispose();
     }
 
     @Override
-    protected void processMouseEvent(MouseEvent event, JLayer<? extends MainPanel> layer) {
+    protected void processMouseEvent(MouseEvent event, JLayer<? extends Component> layer) {
         if (mouseHovered) {
-            event.consume();
+            event.consume(); // Para que la interación solo afecte al layer
         }
 
         if (SwingUtilities.isLeftMouseButton(event)) {
@@ -94,13 +93,23 @@ public class FloatingActionButton extends LayerUI<MainPanel> {
     }
 
     @Override
-    protected void processMouseMotionEvent(MouseEvent event, JLayer<? extends MainPanel> layer) {
+    protected void processMouseMotionEvent(MouseEvent event, JLayer<? extends Component> layer) {
         Point pointer = SwingUtilities.convertPoint(event.getComponent(), event.getPoint(), layer.getView());
         boolean hover = shape.contains(pointer);
 
         if (mouseHovered != hover) {
             mouseHovered = hover;
             layer.repaint(shape.getBounds());
+
+            if (hover) {
+                layer.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            } else {
+                layer.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        }
+
+        if (mousePressed) {
+            event.consume(); // Para que la interación solo afecte al layer
         }
     }
 }
