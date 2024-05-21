@@ -51,6 +51,9 @@ public class FloatingActionButton extends LayerUI<Component> {
         Graphics2D button = (Graphics2D) g.create();
         button.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        BufferedImage shadowImage = createBlurImage(size);
+        button.drawImage(shadowImage, x-20, y-20, null);
+
         // Pinta el boton según la interacción
         if (mousePressed) {
             button.setColor(pressColor);
@@ -110,5 +113,28 @@ public class FloatingActionButton extends LayerUI<Component> {
         if (mousePressed) {
             event.consume(); // Para que la interación solo afecte al layer
         }
+    }
+
+    private BufferedImage createBlurImage(int size) {
+        int shadowSize = size+40;
+        BufferedImage shadowImage = new BufferedImage(shadowSize, shadowSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = shadowImage.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Dibujar elíptico para la sombra
+        g2d.setBackground(Color.DARK_GRAY);
+        g2d.setColor(new Color(0, 0, 0, 100));
+        g2d.fill(new Ellipse2D.Double((size*.2f)*2, (size*.2f)*2, size+(size*.1f), size+(size*.1f)));
+        g2d.dispose();
+
+        // Crear un kernel más grande para un desenfoque más notorio
+        int kernelSize = 15;
+        float[] matrix = new float[kernelSize * kernelSize];
+        for (int i = 0; i < kernelSize * kernelSize; i++) {
+            matrix[i] = .8f / (kernelSize * kernelSize);
+        }
+
+        BufferedImageOp op = new ConvolveOp(new Kernel(kernelSize, kernelSize, matrix));
+        return op.filter(shadowImage, null);
     }
 }
