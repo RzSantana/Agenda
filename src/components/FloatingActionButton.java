@@ -15,9 +15,14 @@ public class FloatingActionButton extends LayerUI<Component> {
     private Color hoverColor = defaultColor.brighter();
     private boolean mouseHovered;
     private boolean mousePressed;
+    private ContactsList refContactsList;
 
     public FloatingActionButton() {
         iconPlus = new ImageIcon(getClass().getResource("../images/plus.png")).getImage();
+    }
+
+    public void setRefContactsList(ContactsList ref) {
+        refContactsList = ref;
     }
 
     // Se configura el componente para que escuche eventos del raton, una vez se renderiaza
@@ -89,6 +94,9 @@ public class FloatingActionButton extends LayerUI<Component> {
 
             if (event.getID() == MouseEvent.MOUSE_RELEASED) {
                 mousePressed = false;
+                if (mouseHovered && refContactsList != null) {
+                    handleClick();
+                }
                 layer.repaint(shape.getBounds());
             }
         }
@@ -136,5 +144,9 @@ public class FloatingActionButton extends LayerUI<Component> {
 
         BufferedImageOp op = new ConvolveOp(new Kernel(kernelSize, kernelSize, matrix));
         return op.filter(shadowImage, null);
+    }
+
+    public void handleClick() {
+        refContactsList.addContact(new Contact("Carlos", "618 49 44 62"));
     }
 }
