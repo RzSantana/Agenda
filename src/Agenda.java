@@ -6,25 +6,27 @@ import java.awt.*;
 
 public class Agenda extends JFrame {
     private JPanel body;
+    private MainPanel mainPanel;
+    private FloatingActionButton floatingActionButton;
 
     public Agenda() {
-        setTitle("Agenda");
-        setSize(450, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setResizable(false);
-        setFocusTraversalPolicy(new DefaultFocusTraversalPolicy());
-        setLocationRelativeTo(null);
-
-
         body = new JPanel();
         body.setBackground(Color.WHITE);
         body.setBorder(new EmptyBorder(0, 20, 0, 20));
         body.setLayout(new BorderLayout());
 
+        mainPanel = new MainPanel();
+        floatingActionButton = new FloatingActionButton();
+        floatingActionButton.setRefContactsList(mainPanel.getContactsList());
+
+        setTitle("Agenda");
+        setSize(400, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
+        setFocusTraversalPolicy(new DefaultFocusTraversalPolicy());
+        setLocationRelativeTo(null);
         setContentPane(body);
 
-        add(new JLayer<>(new MainPanel(), new FloatingActionButton()));
-
-
+        add(new JLayer<>(mainPanel, floatingActionButton));
     }
 }
