@@ -23,4 +23,8 @@ public class MainPanel extends JPanel {
         add(search);
         add(contactsList);
     }
+
+    public ContactsList getContactsList() {
+        return this.contactsList;
+    }
 }
