@@ -1,11 +1,17 @@
 package components;
 
+import database.ContactDAO;
+import database.DatabaseConnection;
+import models.ContactName;
+import models.ContactNumberPhone;
+
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.*;
+import java.sql.SQLException;
 
 public class FloatingActionButton extends LayerUI<Component> {
     private Shape shape;
@@ -147,6 +153,11 @@ public class FloatingActionButton extends LayerUI<Component> {
     }
 
     public void handleClick() {
-        refContactsList.addContact(new Contact("Carlos", "618 49 44 62"));
+        try {
+            ContactDAO.insertContact(new ContactName("Carlos"), new ContactNumberPhone("618494462"));
+            System.out.println("[!] Nuevo usuario guardado");
+        } catch (SQLException e) {
+            System.err.println("[ERROR] No se ha podido guardar el nuevo usuario ");
+        }
     }
 }

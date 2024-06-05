@@ -38,16 +38,16 @@ public class ContactsList extends JScrollPane {
         updateMessageEmptyContacts();
     }
 
-    public void addContact(Contact newContact) {
-        list.add(newContact);
+    public void addContact(ContactCard newContactCard) {
+        list.add(newContactCard);
         list.add(Box.createRigidArea(new Dimension(0, 20)));
         updateMessageEmptyContacts();
         list.revalidate();
         list.repaint();
     }
 
-    public void removeContact(Contact contact) {
-        list.remove(contact);
+    public void removeContact(ContactCard contactCard) {
+        list.remove(contactCard);
         updateMessageEmptyContacts();
         list.revalidate();
         list.repaint();
